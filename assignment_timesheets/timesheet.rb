@@ -46,7 +46,7 @@ class Timesheet
   private
 
   def timesheets_group_by
-    TIMESHEETS.group_by { |hash| hash[:type]}
+    TIMESHEETS.group_by {|hash| hash[:type]}
   end
 
   def weekday(date_string)
@@ -64,28 +64,26 @@ class Timesheet
     result = timesheets_group_by
 
     result['interviews'].each do |hash|
-      day = weekday (hash[:date])
+      day = weekday(hash[:date])
       total_hours += hash[:logged_hours]
+      interview_hours += hash[:logged_hours]
       if day == "Saturday" || day == "Sunday"
-        billing_hours += hash[:logged_hours] * ( INTERVIEW_HOUR_RATE + BONUS_HOUR_RATE )
-        bonus += hash[:logged_hours] * ( INTERVIEW_HOUR_RATE + BONUS_HOUR_RATE )
-        interview_hours += hash[:logged_hours]
+        billing_hours += hash[:logged_hours] * (INTERVIEW_HOUR_RATE + BONUS_HOUR_RATE)
+        bonus += hash[:logged_hours] * (INTERVIEW_HOUR_RATE + BONUS_HOUR_RATE)
       else
         billing_hours += hash[:logged_hours] * INTERVIEW_HOUR_RATE
-        interview_hours += hash[:logged_hours]
       end
     end
 
     result['development'].each do |hash|
       day = weekday (hash[:date])
       total_hours += hash[:logged_hours]
+      development_hours += hash[:logged_hours]
       if day == "Saturday" || day == "Sunday"
-        billing_hours += hash[:logged_hours] * ( DEVELOPMENT_HOUR_RATE + BONUS_HOUR_RATE )
-        bonus += hash[:logged_hours] * ( DEVELOPMENT_HOUR_RATE + BONUS_HOUR_RATE )
-        development_hours += hash[:logged_hours]
+        billing_hours += hash[:logged_hours] * (DEVELOPMENT_HOUR_RATE + BONUS_HOUR_RATE)
+        bonus += hash[:logged_hours] * (DEVELOPMENT_HOUR_RATE + BONUS_HOUR_RATE)
       else
         billing_hours += hash[:logged_hours] * DEVELOPMENT_HOUR_RATE
-        development_hours += hash[:logged_hours]
       end
     end
 
